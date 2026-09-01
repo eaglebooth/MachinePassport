@@ -19,7 +19,8 @@ type RuntimeClient = {
 
 export type Result = { success: boolean; data?: unknown; hash?: string; error?: string; receipt?: Record<string, unknown>; transaction?: Record<string, unknown> };
 export const activeNetwork = () => network;
-export const contractAddress = () => process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || "";
+const ACTIVE_STUDIONET_CONTRACT = "0x56010DE036b4FDec95Bf0F1641605938D9CC7d60";
+export const contractAddress = () => process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || (network === "studionet" ? ACTIVE_STUDIONET_CONTRACT : "");
 export const explorerUrl = () => `${process.env.NEXT_PUBLIC_EXPLORER_BASE || "https://explorer-studio.genlayer.com/address/"}${contractAddress()}`;
 export const transactionExplorerUrl = (hash: string) => {
   const configured = process.env.NEXT_PUBLIC_TX_EXPLORER_BASE;

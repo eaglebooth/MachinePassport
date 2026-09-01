@@ -1,12 +1,13 @@
 # MachinePassport StudioNet release evidence
 
-Status: **NOT DEPLOYED — TEMPLATE**
+Status: **DEPLOYED — LIVE LIFECYCLE PENDING**
 
 ## Release identity
 
-- Repository commit: pending
-- Contract address: pending
-- Deployed source SHA-256 and bytes: pending
+- Repository commit: [`9bed7d8a34303a9e814e7516400b449982f2fecb`](https://github.com/eaglebooth/MachinePassport/commit/9bed7d8a34303a9e814e7516400b449982f2fecb)
+- Contract address: [`0x56010DE036b4FDec95Bf0F1641605938D9CC7d60`](https://explorer-studio.genlayer.com/address/0x56010DE036b4FDec95Bf0F1641605938D9CC7d60)
+- Deployed source verification: retrieved from StudioNet with `genlayer code`; reviewed mechanisms present
+- Inspector evidence commit: [`a9fe8b939866edeb064d1892c9a302dc2ff5db3e`](https://github.com/eaglebooth/MachinePassportInspectorEvidence/commit/a9fe8b939866edeb064d1892c9a302dc2ff5db3e)
 - Production frontend: pending
 
 ## Verification matrix
