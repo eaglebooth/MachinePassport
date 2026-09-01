@@ -47,4 +47,7 @@ Do not enter branch URLs. Supported evidence forms are full-commit GitHub raw UR
 - Threat model: `docs/THREAT_MODEL.md`
 - Release checklist: `docs/RELEASE_EVIDENCE_TEMPLATE.md`
 
-No deployment or live transaction is claimed until Explorer links are added after StudioNet verification.
+StudioNet V1 deployment and live transaction links are recorded in
+`docs/RELEASE_EVIDENCE_TEMPLATE.md`, including the truthful unresolved assessment
+result. V2 must be freshly deployed and pass both happy and adversarial live paths
+before the project is described as submission-ready.

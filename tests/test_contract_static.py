@@ -32,6 +32,7 @@ class ContractStaticTests(unittest.TestCase):
         self.assertIn("SERVICE_CURRENT", SOURCE)
         self.assertIn("INSPECTION_REQUIRED", SOURCE)
         self.assertIn("UNRESOLVED", SOURCE)
+        self.assertIn("must match exactly byte-for-byte", SOURCE)
 
     def test_contract_has_no_custody_or_transfer_mechanism(self):
         forbidden = ("emit_transfer", "payable", "escrow", "reward", "stake")

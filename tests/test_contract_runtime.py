@@ -65,24 +65,14 @@ class FakeReturn:
 class FakeNondet:
     web = FakeWeb
     last_assessment = None
-    falsify = False
+    validator_override = None
 
     @classmethod
     def exec_prompt(cls, prompt, response_format=None):
         if response_format != "json":
             raise AssertionError("structured JSON response was not requested")
         if "maintenance-proof falsifier" in prompt:
-            assessment = cls.last_assessment
-            return {
-                "falsified": cls.falsify,
-                "correct_identity_relation": assessment["identity_relation"],
-                "correct_procedure_relation": assessment["procedure_relation"],
-                "correct_event_relation": assessment["event_relation"],
-                "correct_procedure_coverage": assessment["procedure_coverage"],
-                "correct_open_issue": assessment["open_issue"],
-                "correct_state": assessment["recommended_state"],
-                "contradictions": [],
-            }
+            return cls.validator_override or dict(cls.last_assessment)
         if "ignore the procedure" in prompt.lower():
             result = {
                 "identity_relation": "UNKNOWN",
@@ -127,7 +117,7 @@ class FakeNondet:
                 "procedure_coverage": "PARTIAL",
                 "open_issue": "NONE",
                 "recommended_state": "INSPECTION_REQUIRED",
-                "missing_steps": ["axis calibration"],
+                "missing_steps": ["axis calibration confirmation"],
                 "material_facts": ["Four of five mandatory steps are supported"],
                 "rationale": "The inspector record does not support axis calibration.",
             }
@@ -202,7 +192,7 @@ def new_contract():
     contract.service_evidence_index = TreeMap()
     fake_gl.message.sender_address.as_hex = OWNER
     FakeNondet.last_assessment = None
-    FakeNondet.falsify = False
+    FakeNondet.validator_override = None
     procedure = body("oem-procedure-xr12-v1.json")
     FakeWeb.bodies = {PROCEDURE_URL: procedure}
     machine_id = contract.register_machine(
@@ -211,6 +201,8 @@ def new_contract():
     )
     fake_gl.message.sender_address.as_hex = INSPECTOR
     contract.accept_machine(machine_id)
+    # Keep service freshness tests deterministic as wall-clock time advances.
+    contract._now = lambda: 1788249700
     return contract, machine_id
 
 
@@ -254,7 +246,7 @@ class MachinePassportRuntimeTests(unittest.TestCase):
         _, checkpoint_id = add_service(contract, machine_id, "service-missing-step.json")
         self.assertEqual(contract.assess_checkpoint(checkpoint_id), "INSPECTION_REQUIRED")
         checkpoint = json.loads(contract.get_checkpoint(checkpoint_id))
-        self.assertEqual(checkpoint["missing_steps"], ["axis calibration"])
+        self.assertEqual(checkpoint["missing_steps"], ["axis calibration confirmation"])
 
     def test_material_open_issue_requires_inspection(self):
         contract, machine_id = new_contract()
@@ -341,10 +333,57 @@ class MachinePassportRuntimeTests(unittest.TestCase):
         }
         self.assertEqual(contract_module._normalize_assessment(candidate), {})
 
+    def test_nonconsequential_explanation_fields_may_default(self):
+        candidate = {
+            "identity_relation": "MATCH", "procedure_relation": "MATCH",
+            "event_relation": "MATCH", "procedure_coverage": "COMPLETE",
+            "open_issue": "NONE", "recommended_state": "SERVICE_CURRENT",
+            "missing_steps": [],
+        }
+        normalized = contract_module._normalize_assessment(candidate)
+        self.assertEqual(normalized["recommended_state"], "SERVICE_CURRENT")
+        self.assertEqual(normalized["material_facts"], [])
+        self.assertEqual(normalized["rationale"], "Bounded semantic assessment completed.")
+
+    def test_missing_steps_remains_required_and_duplicate_free(self):
+        candidate = {
+            "identity_relation": "MATCH", "procedure_relation": "MATCH",
+            "event_relation": "MATCH", "procedure_coverage": "COMPLETE",
+            "open_issue": "NONE", "recommended_state": "SERVICE_CURRENT",
+        }
+        self.assertEqual(contract_module._normalize_assessment(candidate), {})
+        candidate.update({
+            "procedure_coverage": "PARTIAL",
+            "recommended_state": "INSPECTION_REQUIRED",
+            "missing_steps": ["servo brake inspection", "servo brake inspection"],
+        })
+        self.assertEqual(contract_module._normalize_assessment(candidate), {})
+
+    def test_missing_step_signature_is_order_independent(self):
+        left = {
+            "identity_relation": "MATCH", "procedure_relation": "MATCH",
+            "event_relation": "MATCH", "procedure_coverage": "PARTIAL",
+            "open_issue": "NONE", "recommended_state": "INSPECTION_REQUIRED",
+            "missing_steps": ["servo brake inspection", "axis calibration confirmation"],
+        }
+        right = dict(left)
+        right["missing_steps"] = list(reversed(left["missing_steps"]))
+        self.assertEqual(
+            contract_module._assessment_signature(left),
+            contract_module._assessment_signature(right),
+        )
+
     def test_active_falsifier_disagreement_rejects_consensus(self):
         contract, machine_id = new_contract()
         _, checkpoint_id = add_service(contract, machine_id, "service-complete.json")
-        FakeNondet.falsify = True
+        FakeNondet.validator_override = {
+            "identity_relation": "MATCH", "procedure_relation": "MATCH",
+            "event_relation": "MATCH", "procedure_coverage": "PARTIAL",
+            "open_issue": "NONE", "recommended_state": "INSPECTION_REQUIRED",
+            "missing_steps": ["axis calibration confirmation"],
+            "material_facts": ["One mandatory step lacks support"],
+            "rationale": "Independent falsification found a missing mandatory step.",
+        }
         with self.assertRaisesRegex(UserError, "VALIDATOR_DISAGREEMENT"):
             contract.assess_checkpoint(checkpoint_id)
 
