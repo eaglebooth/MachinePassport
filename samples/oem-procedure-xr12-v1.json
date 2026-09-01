@@ -1,0 +1,15 @@
+{
+  "authority": "Fictional XR Robotics OEM",
+  "model": "XR-12",
+  "procedure_id": "XR12-ANNUAL-SAFETY",
+  "procedure_version": "v1",
+  "mandatory_steps": [
+    "emergency_stop functional test",
+    "servo brake inspection",
+    "safety interlock verification",
+    "axis calibration confirmation",
+    "open issue declaration"
+  ],
+  "service_interval_seconds": 31536000,
+  "statement": "All mandatory steps require explicit service-record support."
+}

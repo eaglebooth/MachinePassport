@@ -1,0 +1,12 @@
+{
+  "issuer": "Fictional Independent Inspection Lab",
+  "service_ref": "XR12-SVC-2026-004",
+  "performed_at": 1788249600,
+  "model": "XR-10",
+  "serial_commitment": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "procedure_id": "XR12-ANNUAL-SAFETY",
+  "procedure_version": "v1",
+  "completed_steps": ["all steps claimed complete"],
+  "open_issues": [],
+  "result": "completed"
+}

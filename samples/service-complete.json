@@ -1,0 +1,18 @@
+{
+  "issuer": "Fictional Independent Inspection Lab",
+  "service_ref": "XR12-SVC-2026-001",
+  "performed_at": 1788249600,
+  "model": "XR-12",
+  "serial_commitment": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "procedure_id": "XR12-ANNUAL-SAFETY",
+  "procedure_version": "v1",
+  "completed_steps": [
+    "emergency stop functional test",
+    "servo brake inspection",
+    "safety interlock verification",
+    "axis calibration confirmation",
+    "open issue declaration"
+  ],
+  "open_issues": [],
+  "result": "completed"
+}
