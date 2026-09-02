@@ -10,7 +10,7 @@ Status: **V2 DEPLOYED — HAPPY PATH AND SEMANTIC FAILURE PATH VERIFIED LIVE**
 - Deployed source verification: StudioNet Explorer source matches V2 normalized signature, exact identifier and independent validator mechanisms
 - Inspector happy-path evidence commit: [`a9fe8b939866edeb064d1892c9a302dc2ff5db3e`](https://github.com/eaglebooth/MachinePassportInspectorEvidence/commit/a9fe8b939866edeb064d1892c9a302dc2ff5db3e)
 - Inspector final failure-path evidence commit: [`262d46c0cbd1f17369ef16c58bb7ac7e1143fa38`](https://github.com/eaglebooth/MachinePassportInspectorEvidence/commit/262d46c0cbd1f17369ef16c58bb7ac7e1143fa38)
-- Production frontend: pending
+- Production frontend: [`https://machinepassport.vercel.app`](https://machinepassport.vercel.app) — Vercel production deployment `dpl_BGW7chDuntB98xsm1gePfd1apDHW`, smoke-tested on `/` and `/passport` with the V2 contract address present and the V1 address absent from the production bundle
 
 ## V1 live lifecycle (retained truthfully)
 

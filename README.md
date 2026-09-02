@@ -47,7 +47,8 @@ Do not enter branch URLs. Supported evidence forms are full-commit GitHub raw UR
 - Threat model: `docs/THREAT_MODEL.md`
 - Release checklist: `docs/RELEASE_EVIDENCE_TEMPLATE.md`
 
-StudioNet V1 deployment and live transaction links are recorded in
-`docs/RELEASE_EVIDENCE_TEMPLATE.md`, including the truthful unresolved assessment
-result. V2 must be freshly deployed and pass both happy and adversarial live paths
-before the project is described as submission-ready.
+StudioNet V1 and V2 deployment details, live transaction links, and authoritative
+readbacks are recorded in `docs/RELEASE_EVIDENCE_TEMPLATE.md`. The record retains the
+truthful unresolved V1 and V2 disagreement outcomes while separately documenting the
+successful V2 happy path and semantic failure path. The production console is deployed
+at [machinepassport.vercel.app](https://machinepassport.vercel.app).
