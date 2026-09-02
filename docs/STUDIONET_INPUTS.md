@@ -1,6 +1,6 @@
 # StudioNet lifecycle inputs
 
-Active contract: [`0x56010DE036b4FDec95Bf0F1641605938D9CC7d60`](https://explorer-studio.genlayer.com/address/0x56010DE036b4FDec95Bf0F1641605938D9CC7d60)
+Active V2 contract: [`0x2Fa5A212b1ECF57D3D8c0590902319b3E5972ccc`](https://explorer-studio.genlayer.com/address/0x2Fa5A212b1ECF57D3D8c0590902319b3E5972ccc)
 
 These are synthetic testing inputs. They do not certify a physical machine or authorize its operation.
 
@@ -45,3 +45,12 @@ All files use origin `https://raw.githubusercontent.com` and commit `a9fe8b93986
 | `service-prompt-injection.txt` | `XR12-SVC-2026-005` | 325 | `6fd5d15190a060aa7b7a8498c95041cf11fcea67282220eeb433e1d57ee0fc7b` | `UNRESOLVED` |
 
 Each record is single-use and time-ordered. A later failure-path run should use a fresh machine registration or a strictly newer `performed_at` embedded identically in a newly committed evidence file.
+
+## Executed V2 missing-step records
+
+| File / commit | Reference | Performed at | Bytes | SHA-256 | Live outcome |
+| --- | --- | ---: | ---: | --- | --- |
+| `service-missing-step-v2-live.json` / `0b563c254471d2c17229c7efbe80c9ef04d19cb2` | `XR12-SVC-2026-006` | `1788256500` | 547 | `5b8158bfa0734e3e4e9483efaa71fbf03cc562695d888cdf1ef5ef7e49cff8cd` | `MAJORITY_DISAGREE`; checkpoint `1` remained `OPEN` because the fixture made the open-issue classification ambiguous |
+| `service-missing-step-material-v2-live.json` / `262d46c0cbd1f17369ef16c58bb7ac7e1143fa38` | `XR12-SVC-2026-007` | `1788257000` | 632 | `881e29ef06d1642860f0a07829c95ea093599bc21b33b7f06efe3c402c336846` | `MAJORITY_AGREE`; checkpoint `2` became `INSPECTION_REQUIRED` with the exact missing step |
+
+Do not reuse these service references, digests or timestamps on machine `0`.
